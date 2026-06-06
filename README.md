@@ -1,6 +1,6 @@
 # FF@15 marketing site
 
-Static marketing landing page for [FF@15](https://ff15.gg) — a free League of Legends live overlay.
+Static marketing landing page for [FF@15](https://ff15gg.com) — a free League of Legends live overlay.
 
 ## What's in here
 
@@ -10,7 +10,7 @@ Static marketing landing page for [FF@15](https://ff15.gg) — a free League of 
 | `og-image.png`         | Open Graph / Twitter preview image (1200×630)    |
 | `og-image.html`        | Source template for regenerating `og-image.png`  |
 | `assets/ff15-logo.svg` | Standalone logo asset                            |
-| `CNAME`                | Custom domain (`ff15.gg`) for GitHub Pages       |
+| `CNAME`                | Custom domain (`ff15gg.com`) for GitHub Pages       |
 
 No build step required — GitHub Pages serves the files as-is.
 
@@ -39,10 +39,10 @@ python3 -m http.server 8080
    - Source: **GitHub Actions**
    - The included workflow (`.github/workflows/pages.yml`) deploys on every push to `main`.
 
-3. **Custom domain** (optional): `CNAME` already points to `ff15.gg`. Add a DNS record:
+3. **Custom domain** (optional): `CNAME` already points to `ff15gg.com`. Add a DNS record:
 
    ```
-   ff15.gg  CNAME  YOUR_USER.github.io
+   ff15gg.com  CNAME  YOUR_USER.github.io
    ```
 
    Then enable **Enforce HTTPS** under Pages settings after DNS propagates.
