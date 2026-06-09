@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>FF@15 — Know if it's actually winnable, by 15:00</title>
-<meta name="description" content="A free live overlay for League of Legends. FF@15 reads your match in real time and scores every stat — CS/min, gold, KP, vision — against your rank. So when someone types /ff at 15, you actually know the answer."/>
+<title>FF@15: Know if it's actually winnable by 15:00</title>
+<meta name="description" content="A free live overlay for League of Legends. FF@15 reads your match in real time and scores every stat (CS/min, gold, KP, vision) against your rank. So when someone types /ff at 15, you actually know the answer."/>
 <meta name="theme-color" content="#010A13"/>
 
 <!-- ====== Social / Open Graph ======
@@ -14,16 +14,16 @@
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="FF@15"/>
 <meta property="og:url" content="https://ff15gg.com/"/>
-<meta property="og:title" content="FF@15 — Know if it's actually winnable, by 15:00"/>
+<meta property="og:title" content="FF@15: Know if it's actually winnable by 15:00"/>
 <meta property="og:description" content="A free League of Legends live overlay that scores every stat against your rank in real time. So when someone types /ff at 15, you know the answer."/>
 <meta property="og:image" content="https://ff15gg.com/og-image.png"/>
 <meta property="og:image:secure_url" content="https://ff15gg.com/og-image.png"/>
 <meta property="og:image:type" content="image/png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="FF@15 live overlay over Summoner's Rift at night — match clock at 14:32, stats scored against the Diamond benchmark."/>
+<meta property="og:image:alt" content="FF@15 live overlay over Summoner's Rift at night. Match clock at 14:32, stats scored against the Diamond benchmark."/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="FF@15 — Know if it's actually winnable, by 15:00"/>
+<meta name="twitter:title" content="FF@15: Know if it's actually winnable by 15:00"/>
 <meta name="twitter:description" content="A free League of Legends live overlay that scores every stat against your rank in real time. So when someone types /ff at 15, you know the answer."/>
 <meta name="twitter:image" content="https://ff15gg.com/og-image.png"/>
 <meta name="twitter:image:alt" content="FF@15 live overlay over Summoner's Rift at night."/>
@@ -98,8 +98,8 @@
   .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(28px,4vw,56px);align-items:center}
   @media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:42px}}
   .hero h1{font-size:clamp(38px,6vw,68px);font-weight:700}
-  .hero h1 .em{color:var(--gold);font-style:italic}
-  .hero h1 .ff{color:var(--red);font-style:italic;white-space:nowrap}
+  .hero h1 .em{color:var(--gold)}
+  .hero h1 .ff{color:var(--red);white-space:nowrap}
   .hero .lede{color:var(--muted);font-size:clamp(15px,1.6vw,18.5px);margin-top:22px;max-width:52ch}
   .hero .lede b{color:var(--fg);font-weight:600}
   .hero-cta{display:flex;gap:13px;flex-wrap:wrap;margin-top:30px}
@@ -180,7 +180,7 @@
   .hook-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,64px);align-items:center}
   @media(max-width:820px){.hook-grid{grid-template-columns:1fr;gap:36px}}
   .hook h2{font-size:clamp(28px,4.2vw,50px)}
-  .hook h2 .slash{color:var(--red);font-style:italic}
+  .hook h2 .slash{color:var(--red)}
   .hook p{color:var(--muted);font-size:16.5px;margin-top:18px;max-width:46ch}
   .hook p b{color:var(--fg)}
   /* verdict gauge */
@@ -301,13 +301,37 @@
   .cta::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 90% at 50% 0%,rgba(16,80,72,.4),transparent 60%);z-index:0}
   .cta-in{position:relative;z-index:1;max-width:60ch;margin:0 auto}
   .cta h2{font-size:clamp(30px,4.6vw,54px)}
-  .cta h2 .g{color:var(--gold);font-style:italic}
+  .cta h2 .g{color:var(--gold)}
   .cta p{color:var(--muted);font-size:17px;margin-top:18px}
   .cta-btns{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:30px}
   .platforms{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px;font-family:var(--fm);
     font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
   .platforms span{display:inline-flex;align-items:center;gap:8px}
   .platforms svg{width:14px;height:14px;color:var(--gold)}
+
+  /* ---- smart download split button ---- */
+  .dl{position:relative;display:inline-flex;gap:5px;vertical-align:top;text-align:left}
+  .dl-toggle{padding:14px 12px}
+  .dl-toggle svg{width:14px;height:14px;transition:transform .18s}
+  .dl[data-open] .dl-toggle svg{transform:rotate(180deg)}
+  .dl-menu{position:absolute;top:calc(100% + 9px);left:0;min-width:255px;z-index:40;
+    background:var(--surface);border:1px solid var(--border-gold);clip-path:var(--bevel-sm);
+    padding:6px;box-shadow:0 20px 46px rgba(0,0,0,.6);
+    opacity:0;visibility:hidden;transform:translateY(-7px);transition:opacity .16s,transform .16s,visibility .16s}
+  .dl[data-open] .dl-menu{opacity:1;visibility:visible;transform:none}
+  .dl-menu a{display:flex;align-items:center;gap:12px;padding:11px 13px;color:var(--fg);
+    font-family:var(--fm);font-size:12.5px;letter-spacing:.04em;text-decoration:none;
+    clip-path:var(--bevel-sm);transition:background .14s,color .14s}
+  .dl-menu a:hover{background:rgba(200,170,110,.1);color:var(--blue-light)}
+  .dl-menu a svg{width:18px;height:18px;color:var(--gold);flex:none}
+  .dl-menu a:hover svg{color:var(--blue-light)}
+  .dl-sub{display:block;color:var(--dim);font-size:10px;letter-spacing:.11em;text-transform:uppercase;margin-top:3px;font-weight:400}
+  .dl-rel{border-top:1px solid var(--line);margin-top:5px;padding-top:13px !important;
+    color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:.13em}
+  .cta-ver{font-family:var(--fm);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--dim);margin-top:18px}
+  .cta-ver a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--line-gold)}
+  .cta-ver a:hover{color:var(--blue-light)}
 
   /* ---- footer ---- */
   footer{border-top:1px solid var(--line);background:var(--bg-2);padding:46px 0 38px}
@@ -385,17 +409,18 @@
     <div class="hero-copy">
       <span class="kicker">Free live overlay · League of Legends</span>
       <h1>Is it <span class="ff">/ff at 15</span>? <br/>Or is it <span class="em">winnable</span>?</h1>
-      <p class="lede">FF@15 reads your live match and scores every stat — <b>CS/min, gold, kill participation, vision</b> — against players at your rank. So when someone votes to surrender at fifteen, you're not guessing. <b>You know.</b></p>
+      <p class="lede">FF@15 reads your live match and scores every stat (<b>CS/min, gold, kill participation, vision</b>) against players at your rank. So when someone votes to surrender at fifteen, you're not guessing. <b>You know.</b></p>
       <div class="hero-cta">
-        <a class="btn btn-gold" href="#download">
+        <a class="btn btn-gold" id="heroDl" href="#download">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
-          Download — it's free
+          Download, it's free
         </a>
-        <a class="btn btn-ghost" href="#showcase">See it in action</a>
+        <a class="btn btn-ghost" href="#showcase">Watch it cook</a>
       </div>
       <div class="hero-sub">
         <span><i class="dot"></i> Reads the live game, no input lag</span>
         <span><i class="dot"></i> No account · no ads</span>
+        <span><i class="dot"></i> Won't ping your teammates (you still have to)</span>
       </div>
     </div>
 
@@ -416,7 +441,7 @@
             </svg>
             <div class="pace-txt">
               <div class="lab">Pace to goal · Diamond</div>
-              <div class="val">On track — <b>78%</b></div>
+              <div class="val">On track · <b>78%</b></div>
             </div>
           </div>
           <div class="rows" id="hudRows">
@@ -453,7 +478,7 @@
     <div class="rv">
       <span class="kicker">The 15:00 moment</span>
       <h2>Someone typed <span class="slash">/ff</span>.<br/>Should you?</h2>
-      <p>At fifteen minutes, FF@15 grades your game and reads your team's actual gold lead — then gives you the only verdict that matters. <b>Most "unwinnable" games aren't.</b> Now you can prove it before the vote passes.</p>
+      <p>At fifteen minutes, FF@15 grades your game and reads your team's actual gold lead, then makes the call. <b>Most "unwinnable" games aren't.</b> Now you can prove it before the vote passes.</p>
     </div>
     <div class="hex rv">
       <div class="hex-in verdict">
@@ -470,7 +495,7 @@
             <circle cx="100" cy="100" r="6" fill="#C8AA6E"/>
           </g>
         </svg>
-        <div class="call">Don't /ff — it's winnable</div>
+        <div class="call">Don't /ff, it's winnable</div>
         <div class="sub">Team gold lead <b>+1,240</b> · your grade <b>A−</b></div>
       </div>
     </div>
@@ -483,7 +508,7 @@
     <div class="sec-head rv">
       <span class="kicker">One overlay, every surface</span>
       <h2>From a glance to a full coaching session</h2>
-      <p>FF@15 lives in the corner of your game and expands when you need it — then follows you out of the loading screen to review, plan, and climb.</p>
+      <p>FF@15 lives in the corner of your game and expands when you need it, then follows you out of the loading screen to review, plan, and climb.</p>
     </div>
     <div class="feat-grid">
       <div class="hex rv"><div class="hex-in feat">
@@ -495,13 +520,13 @@
       <div class="hex rv"><div class="hex-in feat">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l4-5 3 3 5-7 6 8"/><path d="M3 21h18"/></svg></div>
         <h3>Expanded panel</h3>
-        <p>One hotkey opens every stat at full size — sparklines with the rank benchmark line, a goal-rank pace ring, jungle clear timeline, and team gold/CS swing.</p>
+        <p>One hotkey opens every stat at full size: sparklines with the rank benchmark line, a goal-rank pace ring, jungle clear timeline, and team gold/CS swing.</p>
         <div class="meta">In-game · hotkey</div>
       </div></div>
       <div class="hex rv"><div class="hex-in feat">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 16l-5 2.6 1-5.5-4-3.9 5.5-.8z"/></svg></div>
         <h3>Live coaching</h3>
-        <p>Matchup-aware build path, skill order, and power-spike timeline that update with the game. Know when you're stronger than the enemy jungler — and when to back off.</p>
+        <p>Matchup-aware build path, skill order, and power-spike timeline that update with the game. Know when you're stronger than the enemy jungler, and when to back off.</p>
         <div class="meta">In-game · coaching mode</div>
       </div></div>
       <div class="hex rv"><div class="hex-in feat">
@@ -513,13 +538,13 @@
       <div class="hex rv"><div class="hex-in feat">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 20h8M12 17v3"/></svg></div>
         <h3>Out-of-game companion</h3>
-        <p>Desktop and mobile. Match history, season stats, rank progression, and a full review of your last game — including the stats the overlay tracked live.</p>
-        <div class="meta">Desktop · mobile</div>
+        <p>Every game graded and filed. Match history, season stats, rank progression, and a full post-game review, built from the same stats the overlay tracked live.</p>
+        <div class="meta">Desktop · out-of-game</div>
       </div></div>
       <div class="hex rv"><div class="hex-in feat">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .5-4.5 4 1.5 6L12 15l-6 3.5 1.5-6L3 8.5 9 8z"/></svg></div>
         <h3>Rank-based benchmarks</h3>
-        <p>Targets that scale from Iron to Challenger. Set a goal rank and chase the exact numbers that get you there — not someone else's.</p>
+        <p>Targets that scale from Iron to Challenger. Set a goal rank and chase the exact numbers that get you there, not someone else's.</p>
         <div class="meta">Every rank · every role</div>
       </div></div>
     </div>
@@ -530,9 +555,9 @@
 <section class="stats" id="stats">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="kicker">What it watches</span>
+      <span class="kicker">What it's judging you on</span>
       <h2>Eight live stats, scored against your rank</h2>
-      <p>Every number is colored against the benchmark for your target rank — <span style="color:var(--blue)">teal ahead</span>, <span style="color:var(--gold)">gold on-pace</span>, <span style="color:var(--red)">red behind</span>. No raw numbers without context.</p>
+      <p>Every number is colored against the benchmark for your target rank: <span style="color:var(--blue)">teal ahead</span>, <span style="color:var(--gold)">gold on-pace</span>, <span style="color:var(--red)">red behind</span>. No raw numbers without context.</p>
     </div>
     <div class="stat-grid">
       <div class="hex rv"><div class="hex-in stat">
@@ -573,7 +598,7 @@
       <div class="hex rv"><div class="hex-in stat">
         <div class="sn">Vision / min</div>
         <div class="row2"><div class="v">0.71</div><svg class="spk" data-spark="0.9,0.85,0.8,0.78,0.74,0.72,0.71" data-bm="0.95" data-invert="1"></svg></div>
-        <div class="bm" style="color:var(--red)"><span class="pip" style="background:var(--red)"></span>−0.24 — your weak spot</div>
+        <div class="bm" style="color:var(--red)"><span class="pip" style="background:var(--red)"></span>−0.24 · your weak spot</div>
       </div></div>
     </div>
   </div>
@@ -583,7 +608,7 @@
 <section id="how">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="kicker">How the benchmarks work</span>
+      <span class="kicker">How we decide you're hardstuck</span>
       <h2>Your targets, not the global average</h2>
       <p>Pick where you are and where you're going. FF@15 pulls per-tier targets for your role and scores you live against the rank you're actually chasing.</p>
     </div>
@@ -591,12 +616,12 @@
       <div class="hex rv"><div class="hex-in step">
         <div class="no"></div>
         <h3>Pick your role &amp; rank</h3>
-        <p>Tell it you're a <span class="g">Diamond IV jungler</span> — or set a goal rank to climb toward and benchmark against your future self.</p>
+        <p>Tell it you're a <span class="g">Diamond IV jungler</span>, or set a goal rank to climb toward and benchmark against your future self.</p>
       </div></div>
       <div class="hex rv"><div class="hex-in step">
         <div class="no"></div>
         <h3>Play your game</h3>
-        <p>FF@15 reads the live match and tracks <span class="t">every stat in real time</span> — no alt-tab, no spreadsheet, no after-the-fact regret.</p>
+        <p>FF@15 reads the live match and tracks <span class="t">every stat in real time</span>. No alt-tab, no spreadsheet, no after-the-fact regret.</p>
       </div></div>
       <div class="hex rv"><div class="hex-in step">
         <div class="no"></div>
@@ -625,7 +650,7 @@
     <div class="sec-head rv">
       <span class="kicker">Inside the app</span>
       <h2>Built like the client you stare at every night</h2>
-      <p>Hextech panels, gold-and-blue, tabular numerics — and not a single thing on screen that Riot's own UI wouldn't recognise.</p>
+      <p>Hextech panels, gold-and-blue, tabular numerics. Nothing on screen Riot's own UI wouldn't recognize.</p>
     </div>
     <div class="show-grid">
       <!-- expanded panel shot -->
@@ -650,9 +675,9 @@
         <div class="frame"><div class="px">
           <div class="mk-head"><svg class="logo"><use href="#ff15"/></svg><div class="tabs"><span>Stats</span><span class="on">Build</span><span>Matchup</span></div></div>
           <div class="mk-build">
-            <div class="br"><div class="it">◆</div><div class="bt"><div class="bn">Black Cleaver</div><div class="bd">vs Kha'Zix — armor shred + sticky</div></div><div class="bc">3,000</div></div>
+            <div class="br"><div class="it">◆</div><div class="bt"><div class="bn">Black Cleaver</div><div class="bd">vs Kha'Zix, armor shred + sticky</div></div><div class="bc">3,000</div></div>
             <div class="br"><div class="it">◇</div><div class="bt"><div class="bn">Mercury's Treads</div><div class="bd">their damage skews AP / CC</div></div><div class="bc">1,100</div></div>
-            <div class="br" style="opacity:.55"><div class="it">◇</div><div class="bt"><div class="bn">Death's Dance</div><div class="bd">next — bleed + AD sustain</div></div><div class="bc">3,300</div></div>
+            <div class="br" style="opacity:.55"><div class="it">◇</div><div class="bt"><div class="bn">Death's Dance</div><div class="bd">next buy, bleed + AD sustain</div></div><div class="bc">3,300</div></div>
             <div class="mk-skill"><span class="q">Q</span><span class="q">Q</span><span>W</span><span class="q">Q</span><span>R</span><span class="q">Q</span></div>
           </div>
         </div></div>
@@ -701,18 +726,31 @@
     <h2>Stop coinflipping the <span class="g">15-minute vote</span></h2>
     <p>Free to download, no account, no ads. It's free because charging money for a /ff joke felt a little wrong.</p>
     <div class="cta-btns">
-      <a class="btn btn-gold" href="#">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8-1.1v7.1H3zM12 4.3L21 3v8.5h-9zM3 12.5h8v7.1l-8-1.1zM12 12.5h9V21l-9-1.3z"/></svg>
-        Download for Windows
-      </a>
-      <a class="btn btn-ghost" href="#">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4.6-.8 1.1-1.9 1-3zM19 17c-.5 1.2-.8 1.7-1.5 2.7-1 1.5-2.4 3.3-4.1 3.3-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.7-4-3.2C-.6 16.4-.9 11 1.6 8.4 2.7 7.2 4.3 6.5 6 6.5c1.7 0 2.8 1 4.2 1 1.4 0 2.2-1 4.2-1 1.5 0 3.1.8 4.2 2.2-3.7 2-3.1 7.3.4 8.3z"/></svg>
-        macOS
-      </a>
+      <div class="dl" id="dl">
+        <a class="btn btn-gold dl-primary" id="dlPrimary" href="https://github.com/troytc/ff15-releases/releases/download/v0.5.1/ff%4015_0.5.1_x64-setup.exe">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8-1.1v7.1H3zM12 4.3L21 3v8.5h-9zM3 12.5h8v7.1l-8-1.1zM12 12.5h9V21l-9-1.3z"/></svg>
+          <span>Download for Windows</span>
+        </a>
+        <button class="btn btn-gold dl-toggle" id="dlToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Choose another platform">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="dl-menu" id="dlMenu" role="menu">
+          <a role="menuitem" href="https://github.com/troytc/ff15-releases/releases/download/v0.5.1/ff15_0.5.1_universal.app.zip">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4.6-.8 1.1-1.9 1-3zM19 17c-.5 1.2-.8 1.7-1.5 2.7-1 1.5-2.4 3.3-4.1 3.3-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.7-4-3.2C-.6 16.4-.9 11 1.6 8.4 2.7 7.2 4.3 6.5 6 6.5c1.7 0 2.8 1 4.2 1 1.4 0 2.2-1 4.2-1 1.5 0 3.1.8 4.2 2.2-3.7 2-3.1 7.3.4 8.3z"/></svg>
+            <span>macOS<span class="dl-sub">Universal · Apple Silicon + Intel</span></span>
+          </a>
+          <a role="menuitem" href="https://github.com/troytc/ff15-releases/releases/download/v0.5.1/ff%4015_0.5.1_x64_en-US.msi">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8-1.1v7.1H3zM12 4.3L21 3v8.5h-9zM3 12.5h8v7.1l-8-1.1zM12 12.5h9V21l-9-1.3z"/></svg>
+            <span>Windows<span class="dl-sub">.msi installer</span></span>
+          </a>
+          <a class="dl-rel" role="menuitem" href="https://github.com/troytc/ff15-releases/releases/latest">All downloads &amp; release notes →</a>
+        </div>
+      </div>
+      <a class="btn btn-ghost" href="#showcase">Watch it cook</a>
     </div>
+    <p class="cta-ver">Latest release <span id="dlVer">v0.5.1</span> · macOS &amp; Windows · Apple Silicon + Intel</p>
     <div class="platforms">
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 20h8"/></svg> Desktop overlay</span>
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg> iOS &amp; Android companion</span>
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .5-4.5 4 1.5 6L12 15l-6 3.5 1.5-6L3 8.5 9 8z"/></svg> Every rank, free</span>
     </div>
   </div>
@@ -724,7 +762,7 @@
     <div class="foot-in">
       <div class="foot-brand">
         <svg class="logo"><use href="#ff15"/></svg>
-        <p>A live League of Legends stat overlay that scores your game against your rank — so you know when it's actually winnable.</p>
+        <p>A live League of Legends stat overlay that scores your game against your rank, so you know when it's actually winnable.</p>
       </div>
       <div class="foot-cols">
         <div class="foot-col">
@@ -738,8 +776,7 @@
           <h4>Get it</h4>
           <a href="#download">Windows</a>
           <a href="#download">macOS</a>
-          <a href="#download">iOS &amp; Android</a>
-          <a href="#download">Patch notes</a>
+          <a href="https://github.com/troytc/ff15-releases/releases" target="_blank" rel="noopener">Patch notes</a>
         </div>
         <div class="foot-col">
           <h4>Support</h4>
@@ -752,7 +789,7 @@
     </div>
     <div class="legal">
       <b>FF@15 isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties.</b> League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. All in-app stats shown on this page are an illustrative demo match. FF@15 reads only the data Riot makes available through the official Live Client and game APIs.
-      <div class="copy">© 2026 FF@15 · Surrender? Never · gg</div>
+      <div class="copy">© 2026 Kickback, LLC · FF@15 · Surrender? Never · gg</div>
     </div>
   </div>
 </footer>
@@ -845,22 +882,36 @@
   }
 
   // ---- reveal on scroll + trigger child animations once ----
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(!en.isIntersecting) return;
-      var el = en.target;
-      el.classList.add("in");
-      drawAll(el);
-      el.querySelectorAll("[data-count]").forEach(countUp);
-      // pace ring
-      var arc = el.querySelector("#paceArc");
-      if(arc){ arc.style.transition="stroke-dashoffset 1.2s cubic-bezier(.3,.7,.3,1)"; requestAnimationFrame(function(){ arc.style.strokeDashoffset = 107*(1-0.78); }); }
-      io.unobserve(el);
-    });
-  },{threshold:0.18, rootMargin:"0px 0px -8% 0px"});
-  document.querySelectorAll(".rv").forEach(function(el){ io.observe(el); });
+  function reveal(el){
+    el.classList.add("in");
+    drawAll(el);
+    el.querySelectorAll("[data-count]").forEach(countUp);
+    // pace ring
+    var arc = el.querySelector("#paceArc");
+    if(arc){ arc.style.transition="stroke-dashoffset 1.2s cubic-bezier(.3,.7,.3,1)"; requestAnimationFrame(function(){ arc.style.strokeDashoffset = 107*(1-0.78); }); }
+  }
+  var rvEls = document.querySelectorAll(".rv");
+  var noMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!("IntersectionObserver" in window) || noMotion){
+    // no observer support (or reduced-motion): show everything up front, never leave it hidden
+    rvEls.forEach(reveal);
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        reveal(en.target);
+        io.unobserve(en.target);
+      });
+    },{threshold:0.18, rootMargin:"0px 0px -8% 0px"});
+    rvEls.forEach(function(el){ io.observe(el); });
+    // backstop: in no-scroll contexts (static previews, screenshot tools) reveal
+    // anything still hidden so content is never left blank if scroll never happens.
+    setTimeout(function(){
+      rvEls.forEach(function(el){ if(!el.classList.contains("in")) reveal(el); });
+    }, 1400);
+  }
 
-  // hero is above the fold — kick its sparklines/counts immediately
+  // hero is above the fold, kick its sparklines/counts immediately
   drawAll(document.querySelector(".hud"));
   document.querySelectorAll(".hud [data-count]").forEach(countUp);
   (function(){ var a=document.getElementById("paceArc"); if(a){ a.style.transition="stroke-dashoffset 1.3s .2s cubic-bezier(.3,.7,.3,1)"; requestAnimationFrame(function(){ requestAnimationFrame(function(){ a.style.strokeDashoffset = 107*(1-0.78); }); }); } })();
@@ -916,6 +967,97 @@
       drawAll(document);
     }, 220);
   });
+})();
+</script>
+
+<!-- ============ SMART DOWNLOAD: OS detect + dropdown + live latest release ============ -->
+<script>
+(function(){
+  "use strict";
+  var REPO = "troytc/ff15-releases";
+  var WIN = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8-1.1v7.1H3zM12 4.3L21 3v8.5h-9zM3 12.5h8v7.1l-8-1.1zM12 12.5h9V21l-9-1.3z"/></svg>';
+  var MAC = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4.6-.8 1.1-1.9 1-3zM19 17c-.5 1.2-.8 1.7-1.5 2.7-1 1.5-2.4 3.3-4.1 3.3-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.7-4-3.2C-.6 16.4-.9 11 1.6 8.4 2.7 7.2 4.3 6.5 6 6.5c1.7 0 2.8 1 4.2 1 1.4 0 2.2-1 4.2-1 1.5 0 3.1.8 4.2 2.2-3.7 2-3.1 7.3.4 8.3z"/></svg>';
+
+  // Fallback assets: hardcoded latest known release, used until the live fetch lands
+  // (and if the GitHub API is unreachable / rate-limited).
+  var BASE = "https://github.com/troytc/ff15-releases/releases/download/v0.5.1/";
+  var A = {
+    mac:    { id:"mac", label:"macOS",   sub:"Universal · Apple Silicon + Intel", icon:MAC, url:BASE+"ff15_0.5.1_universal.app.zip" },
+    winExe: { id:"win", label:"Windows", sub:".exe installer",                    icon:WIN, url:BASE+"ff%4015_0.5.1_x64-setup.exe" },
+    winMsi: { id:"win", label:"Windows", sub:".msi installer",                    icon:WIN, url:BASE+"ff%4015_0.5.1_x64_en-US.msi" }
+  };
+  var version = "0.5.1";
+
+  function detect(){
+    var ua = navigator.userAgent || "";
+    var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+    if(/Win/i.test(p) || /Windows/i.test(ua)) return "win";
+    if(/Mac/i.test(p) || /Mac OS X/i.test(ua)) return "mac";
+    return ""; // Linux / mobile / unknown → fall through to default order
+  }
+
+  // Returns { primary, menu:[...] }. Primary = detected OS; the rest go in the dropdown.
+  function order(){
+    var os = detect();
+    if(os === "mac") return { primary:A.mac,    menu:[A.winExe, A.winMsi] };
+    // Windows (and anything unknown) lead with the one-click .exe installer.
+    return { primary:A.winExe, menu:[A.mac, A.winMsi] };
+  }
+
+  function menuItem(a){
+    return '<a role="menuitem" href="'+a.url+'">'+a.icon+
+      '<span>'+a.label+'<span class="dl-sub">'+a.sub+'</span></span></a>';
+  }
+
+  function render(){
+    var o = order();
+    var primary = document.getElementById("dlPrimary");
+    if(primary){
+      primary.href = o.primary.url;
+      primary.innerHTML = o.primary.icon + '<span>Download for '+o.primary.label+'</span>';
+    }
+    var menu = document.getElementById("dlMenu");
+    if(menu){
+      menu.innerHTML = o.menu.map(menuItem).join("") +
+        '<a class="dl-rel" role="menuitem" href="https://github.com/'+REPO+'/releases/latest">All downloads &amp; release notes →</a>';
+    }
+    var hero = document.getElementById("heroDl");
+    if(hero) hero.href = o.primary.url;
+    var v = document.getElementById("dlVer");
+    if(v) v.textContent = "v" + version;
+  }
+
+  // ---- dropdown open/close ----
+  var dl = document.getElementById("dl"), toggle = document.getElementById("dlToggle");
+  if(dl && toggle){
+    var close = function(){ dl.removeAttribute("data-open"); toggle.setAttribute("aria-expanded","false"); };
+    var open  = function(){ dl.setAttribute("data-open",""); toggle.setAttribute("aria-expanded","true"); };
+    toggle.addEventListener("click", function(e){ e.stopPropagation(); dl.hasAttribute("data-open") ? close() : open(); });
+    document.addEventListener("click", function(e){ if(!dl.contains(e.target)) close(); });
+    document.addEventListener("keydown", function(e){ if(e.key === "Escape" || e.keyCode === 27) close(); });
+  }
+
+  render();
+
+  // ---- live refresh: always point at the newest published release ----
+  function pick(assets, re){
+    for(var i=0;i<assets.length;i++){ if(re.test(assets[i].name)) return assets[i].browser_download_url; }
+    return null;
+  }
+  fetch("https://api.github.com/repos/"+REPO+"/releases/latest", { headers:{ "Accept":"application/vnd.github+json" } })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(rel){
+      if(!rel || !rel.assets || !rel.assets.length) return;
+      version = (rel.tag_name || "").replace(/^v/i,"") || version;
+      var mac    = pick(rel.assets, /\.app\.zip$/i) || pick(rel.assets, /\.dmg$/i);
+      var winExe = pick(rel.assets, /-setup\.exe$/i) || pick(rel.assets, /\.exe$/i);
+      var winMsi = pick(rel.assets, /\.msi$/i);
+      if(mac)    A.mac.url    = mac;
+      if(winExe) A.winExe.url = winExe;
+      if(winMsi) A.winMsi.url = winMsi;
+      render();
+    })
+    .catch(function(){ /* keep hardcoded fallback */ });
 })();
 </script>
 </body>
