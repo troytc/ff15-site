@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>FF@15: Know if it's actually winnable by 15:00</title>
-<meta name="description" content="A free live overlay for League of Legends. FF@15 reads your match in real time and scores every stat (CS/min, gold, KP, vision) against your rank. So when someone types /ff at 15, you actually know the answer."/>
+<title>FF@15: Live League companion &amp; overlay</title>
+<meta name="description" content="Free desktop companion for League of Legends — live stats overlays (CS/min, gold pace vs lane and team, vision, KP), match history, ranked LP tracking, and match rewind."/>
 <meta name="theme-color" content="#010A13"/>
 
 <!-- ====== Social / Open Graph ======
@@ -14,34 +14,25 @@
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="FF@15"/>
 <meta property="og:url" content="https://ff15gg.com/"/>
-<meta property="og:title" content="FF@15: Know if it's actually winnable by 15:00"/>
-<meta property="og:description" content="A free League of Legends live overlay that scores every stat against your rank in real time. So when someone types /ff at 15, you know the answer."/>
+<meta property="og:title" content="FF@15: Live League companion &amp; overlay"/>
+<meta property="og:description" content="Free desktop companion for League of Legends — live stats overlays, match history, ranked LP tracking, and captured match rewind."/>
 <meta property="og:image" content="https://ff15gg.com/og-image.png"/>
 <meta property="og:image:secure_url" content="https://ff15gg.com/og-image.png"/>
 <meta property="og:image:type" content="image/png"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
-<meta property="og:image:alt" content="FF@15 live overlay over Summoner's Rift at night. Match clock at 14:32, stats scored against the Diamond benchmark."/>
+<meta property="og:image:alt" content="FF@15 live overlay over Summoner's Rift at night. Live stats bar with CS/m, gold vs lane, and team gold lead."/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="FF@15: Know if it's actually winnable by 15:00"/>
-<meta name="twitter:description" content="A free League of Legends live overlay that scores every stat against your rank in real time. So when someone types /ff at 15, you know the answer."/>
+<meta name="twitter:title" content="FF@15: Live League companion &amp; overlay"/>
+<meta name="twitter:description" content="Free desktop companion for League of Legends — live stats overlays, match history, ranked LP tracking, and captured match rewind."/>
 <meta name="twitter:image" content="https://ff15gg.com/og-image.png"/>
 <meta name="twitter:image:alt" content="FF@15 live overlay over Summoner's Rift at night."/>
 
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/assets/ff15-tokens.css"/>
 <style>
   :root{
-    --bg:#010A13;--bg-2:#02060c;--surface:#0A1428;--surface-2:#0c1c2e;--fg:#F0E6D2;
-    --muted:#A09B8C;--dim:#6A6B68;
-    --gold:#C8AA6E;--gold-2:#C89B3C;--gold-bright:#F0E6D2;--border-gold:#785A28;--line-gold:#463714;
-    --line:#16273A;--blue:#0AC8B9;--blue-light:#CDFAFA;--red:#E84057;
-    --fd:'Cinzel','Trajan Pro','Palatino Linotype',Georgia,serif;
-    --fb:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
-    --fm:ui-monospace,'SF Mono',Menlo,monospace;
-    --bevel:polygon(13px 0,100% 0,100% calc(100% - 13px),calc(100% - 13px) 100%,0 100%,0 13px);
-    --bevel-sm:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+    --bg-2:#02060c;
+    --red:var(--behind);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;overflow-x:hidden}
@@ -59,12 +50,12 @@
   a{color:inherit;text-decoration:none}
   h1,h2,h3{font-family:var(--fd);font-weight:600;letter-spacing:.01em;line-height:1.08;text-wrap:balance}
   .mono{font-family:var(--fm)}
-  .kicker{font-family:var(--fm);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+  .kicker{color:var(--gold)}
 
   /* ---- buttons ---- */
   .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--fm);font-size:12px;
     letter-spacing:.13em;text-transform:uppercase;padding:14px 22px;cursor:pointer;border:0;
-    clip-path:var(--bevel-sm);transition:transform .15s,filter .15s,background .15s;position:relative}
+    clip-path:var(--bevel-btn);transition:transform .15s,filter .15s,background .15s;position:relative}
   .btn:hover{transform:translateY(-2px)}
   .btn-gold{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#0a0a0a;font-weight:700;
     box-shadow:0 6px 22px rgba(200,155,60,.28)}
@@ -72,10 +63,6 @@
   .btn-ghost{background:transparent;color:var(--gold);box-shadow:inset 0 0 0 1px var(--border-gold)}
   .btn-ghost:hover{background:rgba(200,170,110,.07);color:var(--blue-light);box-shadow:inset 0 0 0 1px var(--gold)}
   .btn svg{width:14px;height:14px}
-
-  /* ---- hex panel (gradient border + bevel) ---- */
-  .hex{background:linear-gradient(160deg,var(--border-gold),#2e2310 60%);clip-path:var(--bevel);padding:1px}
-  .hex-in{background:linear-gradient(165deg,var(--surface-2),#06121e);clip-path:var(--bevel);height:100%}
 
   /* ---- nav ---- */
   header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -161,7 +148,7 @@
   .row .name b{display:block;color:var(--fg);font-size:16px;font-family:var(--fm);letter-spacing:.02em;margin-top:1px}
   .row .spk{height:30px}
   .row .delta{justify-self:end;font-family:var(--fm);font-size:12px;letter-spacing:.03em;display:flex;align-items:center;gap:4px;white-space:nowrap}
-  .up{color:var(--blue)} .down{color:var(--red)} .on{color:var(--gold)}
+  .up{color:var(--ahead)} .down{color:var(--behind)} .on{color:var(--gold)}
   .row .delta .ar{font-size:9px}
 
   /* ---- section scaffolding ---- */
@@ -265,7 +252,7 @@
   .mk-ch .cv small{font-family:var(--fm);font-size:9px;color:var(--blue);margin-left:4px}
   .mk-ch .spk{flex:1;min-height:26px;margin-top:6px}
 
-  /* mini in-frame mock: build/coaching */
+  /* mini in-frame mock: live scoreboard */
   .mk-build{flex:1;display:flex;flex-direction:column;gap:9px}
   .mk-build .br{display:flex;align-items:center;gap:10px;padding:8px 10px;box-shadow:inset 0 0 0 1px var(--line);background:rgba(6,18,30,.55)}
   .mk-build .it{width:30px;height:30px;flex:0 0 auto;clip-path:var(--bevel-sm);background:linear-gradient(145deg,var(--line-gold),#0e1d2c);box-shadow:inset 0 0 0 1px var(--border-gold);display:grid;place-items:center;color:var(--gold);font-family:var(--fd);font-size:13px}
@@ -281,13 +268,13 @@
   .mk-hist{flex:1;display:flex;flex-direction:column;gap:6px}
   .mk-hist .hr{display:grid;grid-template-columns:8px 1fr auto auto;align-items:center;gap:9px;padding:7px 10px;box-shadow:inset 0 0 0 1px var(--line);background:rgba(6,18,30,.5)}
   .mk-hist .hr .res{width:3px;height:22px}
-  .mk-hist .hr.w .res{background:var(--blue)} .mk-hist .hr.l .res{background:var(--red)}
+  .mk-hist .hr.w .res{background:var(--ahead)} .mk-hist .hr.l .res{background:var(--behind)}
   .mk-hist .ch{font-size:11.5px;color:var(--fg)}
   .mk-hist .ch small{display:block;font-family:var(--fm);font-size:9px;color:var(--dim)}
   .mk-hist .kda{font-family:var(--fm);font-size:11px;color:var(--muted)}
   .mk-hist .gr{font-family:var(--fd);font-size:13px;font-weight:700}
 
-  /* mini in-frame mock: 15:00 verdict */
+  /* mini in-frame mock: LP tracker */
   .mk-vd{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
   .mk-vd .gr{font-family:var(--fd);font-size:46px;font-weight:700;color:var(--gold);line-height:1}
   .mk-vd .gl{font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:8px}
@@ -377,7 +364,7 @@
     <nav class="nav-links">
       <a class="lk" href="#features">Features</a>
       <a class="lk" href="#stats">Stats</a>
-      <a class="lk" href="#how">Benchmarks</a>
+      <a class="lk" href="#how">Live pace</a>
       <a class="lk" href="#showcase">Inside</a>
       <a class="btn btn-gold" href="#download">Get FF@15</a>
     </nav>
@@ -407,15 +394,15 @@
   </div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <span class="kicker">Free live overlay · League of Legends</span>
-      <h1>Is it <span class="ff">/ff at 15</span>? <br/>Or is it <span class="em">winnable</span>?</h1>
-      <p class="lede">FF@15 reads your live match and scores every stat (<b>CS/min, gold, kill participation, vision</b>) against players at your rank. So when someone votes to surrender at fifteen, you're not guessing. <b>You know.</b></p>
+      <span class="kicker">Free desktop companion · League of Legends</span>
+      <h1>Live pace on the rift.<br/>Context in the <span class="em">companion</span>.</h1>
+      <p class="lede">FF@15 runs beside League and reads the official Live Client — <b>CS/min, vision/min, gold/min, gold vs your lane, team gold lead, and KP</b> on a top HUD, plus profile, match history, and ranked LP tracking out of game. <b>No API key. No account.</b></p>
       <div class="hero-cta">
         <a class="btn btn-gold" id="heroDl" href="#download">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
           Download, it's free
         </a>
-        <a class="btn btn-ghost" href="#showcase">Watch it cook</a>
+        <a class="btn btn-ghost" href="#showcase">See inside the app</a>
       </div>
       <div class="hero-sub">
         <span><i class="dot"></i> Reads the live game, no input lag</span>
@@ -434,36 +421,41 @@
             <div class="clock"><span class="live"></span><span class="t" id="heroClock">14:32</span></div>
           </div>
           <div class="pace">
-            <svg class="ring" viewBox="0 0 42 42" id="paceRing">
-              <circle cx="21" cy="21" r="17" fill="none" stroke="#16273A" stroke-width="4"/>
-              <circle cx="21" cy="21" r="17" fill="none" stroke="#C8AA6E" stroke-width="4" stroke-linecap="round"
-                stroke-dasharray="107" stroke-dashoffset="107" transform="rotate(-90 21 21)" id="paceArc"/>
-            </svg>
-            <div class="pace-txt">
-              <div class="lab">Pace to goal · Diamond</div>
-              <div class="val">On track · <b>78%</b></div>
+            <div class="pace-txt" style="width:100%">
+              <div class="lab">Live stats bar</div>
+              <div class="val">Gold vs lane · <b class="c-ahead">+420 ahead</b></div>
             </div>
           </div>
           <div class="rows" id="hudRows">
             <div class="row">
-              <div class="name">CS / min<b data-count="8.1">0.0</b></div>
-              <svg class="spk" data-spark="8.4,7.9,8.0,8.3,8.1,8.6,8.1" data-bm="7.5"></svg>
-              <div class="delta up"><span class="ar">▲</span>+0.6</div>
+              <div class="name">CS/m<b data-count="8.1">0.0</b></div>
+              <svg class="spk" data-spark="8.4,7.9,8.0,8.3,8.1,8.6,8.1"></svg>
+              <div class="delta up"><span class="ar">▲</span>pace</div>
             </div>
             <div class="row">
-              <div class="name">Gold / min<b data-count="412">0</b></div>
-              <svg class="spk" data-spark="380,402,395,418,409,420,412" data-bm="388"></svg>
-              <div class="delta up"><span class="ar">▲</span>+24</div>
+              <div class="name">Vis/m<b data-count="0.71">0.00</b></div>
+              <svg class="spk" data-spark="0.9,0.85,0.8,0.78,0.74,0.72,0.71"></svg>
+              <div class="delta down"><span class="ar">▼</span>pace</div>
             </div>
             <div class="row">
-              <div class="name">Kill participation<b data-count="64" data-suffix="%">0%</b></div>
-              <svg class="spk" data-spark="50,55,58,60,62,61,64" data-bm="58"></svg>
-              <div class="delta up"><span class="ar">▲</span>+6%</div>
+              <div class="name">G/m<b data-count="412">0</b></div>
+              <svg class="spk" data-spark="380,402,395,418,409,420,412"></svg>
+              <div class="delta up"><span class="ar">▲</span>pace</div>
             </div>
             <div class="row">
-              <div class="name">Vision / min<b data-count="0.71">0.00</b></div>
-              <svg class="spk" data-spark="0.9,0.85,0.8,0.78,0.74,0.72,0.71" data-bm="0.95" data-invert="1"></svg>
-              <div class="delta down"><span class="ar">▼</span>−0.24</div>
+              <div class="name">vs lane<b>+420</b></div>
+              <svg class="spk" data-spark="120,180,240,300,360,390,420"></svg>
+              <div class="delta up"><span class="ar">▲</span>ahead</div>
+            </div>
+            <div class="row">
+              <div class="name">vs team<b>+1.2k</b></div>
+              <svg class="spk" data-spark="-200,100,400,650,900,1100,1240"></svg>
+              <div class="delta up"><span class="ar">▲</span>ahead</div>
+            </div>
+            <div class="row">
+              <div class="name">KP<b data-count="64" data-suffix="%">0%</b></div>
+              <svg class="spk" data-spark="50,55,58,60,62,61,64"></svg>
+              <div class="delta on"><span class="ar">·</span>64%</div>
             </div>
           </div>
         </div>
@@ -473,16 +465,16 @@
 </main>
 
 <!-- ============ HOOK ============ -->
-<section class="hook" id="verdict">
+<section class="hook" id="pace">
   <div class="wrap hook-grid">
     <div class="rv">
-      <span class="kicker">The 15:00 moment</span>
-      <h2>Someone typed <span class="slash">/ff</span>.<br/>Should you?</h2>
-      <p>At fifteen minutes, FF@15 grades your game and reads your team's actual gold lead, then makes the call. <b>Most "unwinnable" games aren't.</b> Now you can prove it before the vote passes.</p>
+      <span class="kicker">Gold swings, surfaced</span>
+      <h2>Know if you're <span class="slash">ahead</span> before the vote.</h2>
+      <p>FF@15 tracks your gold vs lane opponent and your team's total gold lead in real time. When the swing flips, a banner calls it out — <b>teal when you're ahead, red when you're behind.</b> Hold Tab to peek the stats bar without alt-tabbing.</p>
     </div>
     <div class="hex rv">
       <div class="hex-in verdict">
-        <div class="lab">FF@15 Verdict · 15:00</div>
+        <div class="lab">Team gold · live</div>
         <svg class="gauge" viewBox="0 0 200 116" id="verdictGauge">
           <path d="M16 100 A84 84 0 0 1 184 100" fill="none" stroke="#16273A" stroke-width="13" stroke-linecap="round"/>
           <path d="M16 100 A84 84 0 0 1 184 100" fill="none" stroke="url(#gaugeG)" stroke-width="13" stroke-linecap="round"
@@ -495,8 +487,8 @@
             <circle cx="100" cy="100" r="6" fill="#C8AA6E"/>
           </g>
         </svg>
-        <div class="call">Don't /ff, it's winnable</div>
-        <div class="sub">Team gold lead <b>+1,240</b> · your grade <b>A−</b></div>
+        <div class="call">+1,240 vs enemy team</div>
+        <div class="sub">Lane gold <b>+420 ahead</b> · KP <b>64%</b></div>
       </div>
     </div>
   </div>
@@ -506,46 +498,46 @@
 <section id="features">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="kicker">One overlay, every surface</span>
-      <h2>From a glance to a full coaching session</h2>
-      <p>FF@15 lives in the corner of your game and expands when you need it, then follows you out of the loading screen to review, plan, and climb.</p>
+      <span class="kicker">Overlays + companion</span>
+      <h2>Everything that ships today</h2>
+      <p>Three optional in-game overlays, a full desktop companion, and local match capture — all reading from Riot's official Live Client and LCU APIs.</p>
     </div>
     <div class="feat-grid">
       <div class="hex rv"><div class="hex-in feat">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="8" height="8" rx="1"/><path d="M6 6h2M6 8.5h1.2"/></svg></div>
-        <h3>The corner HUD</h3>
-        <p>Always-on and glanceable. Four pinned stats, each with a live sparkline and a benchmark pip. Never covers your minimap.</p>
-        <div class="meta">In-game · always on</div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="5" rx="1"/><path d="M7 12h3M14 12h3M7 16h10"/></svg></div>
+        <h3>Live stats bar</h3>
+        <p>Top HUD with CS/m, Vis/m, G/m, gold vs lane, gold vs team, KP, and jungle first-clear time. Sparklines and flip banners when gold leads swing.</p>
+        <div class="meta">In-game · overlay</div>
       </div></div>
       <div class="hex rv"><div class="hex-in feat">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l4-5 3 3 5-7 6 8"/><path d="M3 21h18"/></svg></div>
-        <h3>Expanded panel</h3>
-        <p>One hotkey opens every stat at full size: sparklines with the rank benchmark line, a goal-rank pace ring, jungle clear timeline, and team gold/CS swing.</p>
-        <div class="meta">In-game · hotkey</div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2 2"/></svg></div>
+        <h3>Lane quest chip</h3>
+        <p>Compact chip showing your lane opponent's role-quest progress — jungle pet stacks, smite tier, and lane quest completion at a glance.</p>
+        <div class="meta">In-game · overlay</div>
       </div></div>
       <div class="hex rv"><div class="hex-in feat">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 16l-5 2.6 1-5.5-4-3.9 5.5-.8z"/></svg></div>
-        <h3>Live coaching</h3>
-        <p>Matchup-aware build path, skill order, and power-spike timeline that update with the game. Know when you're stronger than the enemy jungler, and when to back off.</p>
-        <div class="meta">In-game · coaching mode</div>
-      </div></div>
-      <div class="hex rv"><div class="hex-in feat">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21a9 9 0 1 0-9-9"/><path d="M3 12l-1.5-2M3 12l2-1"/><path d="M12 7v5l3 2"/></svg></div>
-        <h3>The 15:00 verdict</h3>
-        <p>An S-to-C grade on your game, your biggest win and biggest leak, and the tongue-in-cheek "should you /ff?" gauge that reads your team's real lead.</p>
-        <div class="meta">In-game · 15-minute mark</div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4z"/><path d="M8 10h8M8 14h5"/></svg></div>
+        <h3>Death recap</h3>
+        <p>Left sidebar while you're dead. Suggested items and coach notes are placeholder UI today — the frame and timing are real, content is coming.</p>
+        <div class="meta">In-game · overlay</div>
       </div></div>
       <div class="hex rv"><div class="hex-in feat">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 20h8M12 17v3"/></svg></div>
-        <h3>Out-of-game companion</h3>
-        <p>Every game graded and filed. Match history, season stats, rank progression, and a full post-game review, built from the same stats the overlay tracked live.</p>
+        <h3>Desktop companion</h3>
+        <p>Summoner profile, ranked LP tracker, grouped match history, champ-select board, and a live scoreboard with all ten players while you play.</p>
         <div class="meta">Desktop · out-of-game</div>
       </div></div>
       <div class="hex rv"><div class="hex-in feat">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .5-4.5 4 1.5 6L12 15l-6 3.5 1.5-6L3 8.5 9 8z"/></svg></div>
-        <h3>Rank-based benchmarks</h3>
-        <p>Targets that scale from Iron to Challenger. Set a goal rank and chase the exact numbers that get you there, not someone else's.</p>
-        <div class="meta">Every rank · every role</div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l4-5 3 3 5-7 6 8"/><path d="M3 21h18"/></svg></div>
+        <h3>Match capture &amp; rewind</h3>
+        <p>Stat snapshots and game events written to disk during live games. Expand a history row to scrub through captured timelines after the game.</p>
+        <div class="meta">Local · match_events/</div>
+      </div></div>
+      <div class="hex rv"><div class="hex-in feat">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6m0 0l2-2m-2 2l-2-2"/><circle cx="12" cy="14" r="7"/></svg></div>
+        <h3>Auto-updates</h3>
+        <p>Checks <code style="font-family:var(--fm);font-size:.9em;color:var(--blue-light)">ff15-releases</code> for new builds. Settings → Updates shows install status; macOS and Windows installers are unsigned today.</p>
+        <div class="meta">Settings · updates</div>
       </div></div>
     </div>
   </div>
@@ -555,90 +547,87 @@
 <section class="stats" id="stats">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="kicker">What it's judging you on</span>
-      <h2>Eight live stats, scored against your rank</h2>
-      <p>Every number is colored against the benchmark for your target rank: <span style="color:var(--blue)">teal ahead</span>, <span style="color:var(--gold)">gold on-pace</span>, <span style="color:var(--red)">red behind</span>. No raw numbers without context.</p>
+      <span class="kicker">What the overlay tracks</span>
+      <h2>Live pace stats, in context</h2>
+      <p>Numbers come from the Live Client. <span style="color:var(--ahead)">Teal</span> means ahead on gold vs lane or team; <span style="color:var(--behind)">red</span> means behind. Sparklines show your rolling pace through the game.</p>
     </div>
     <div class="stat-grid">
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">CS / min</div>
-        <div class="row2"><div class="v">8.1</div><svg class="spk" data-spark="8.4,7.9,8.0,8.3,8.1,8.6,8.1" data-bm="7.5"></svg></div>
-        <div class="bm" style="color:var(--blue)"><span class="pip" style="background:var(--blue)"></span>+0.6 vs Diamond</div>
+        <div class="sn">CS/m</div>
+        <div class="row2"><div class="v">8.1</div><svg class="spk" data-spark="8.4,7.9,8.0,8.3,8.1,8.6,8.1"></svg></div>
+        <div class="bm" style="color:var(--ahead)"><span class="pip" style="background:var(--ahead)"></span>live pace</div>
       </div></div>
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">Gold / min</div>
-        <div class="row2"><div class="v">412</div><svg class="spk" data-spark="380,402,395,418,409,420,412" data-bm="388"></svg></div>
-        <div class="bm" style="color:var(--blue)"><span class="pip" style="background:var(--blue)"></span>+24 vs Diamond</div>
+        <div class="sn">Vis/m</div>
+        <div class="row2"><div class="v">0.71</div><svg class="spk" data-spark="0.9,0.85,0.8,0.78,0.74,0.72,0.71"></svg></div>
+        <div class="bm" style="color:var(--behind)"><span class="pip" style="background:var(--behind)"></span>rolling down</div>
       </div></div>
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">Kill participation</div>
-        <div class="row2"><div class="v">64<small>%</small></div><svg class="spk" data-spark="50,55,58,60,62,61,64" data-bm="58"></svg></div>
-        <div class="bm" style="color:var(--blue)"><span class="pip" style="background:var(--blue)"></span>+6% vs Diamond</div>
+        <div class="sn">G/m</div>
+        <div class="row2"><div class="v">412</div><svg class="spk" data-spark="380,402,395,418,409,420,412"></svg></div>
+        <div class="bm" style="color:var(--ahead)"><span class="pip" style="background:var(--ahead)"></span>live pace</div>
       </div></div>
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">KDA</div>
-        <div class="row2"><div class="v">4.2</div><svg class="spk" data-spark="2.0,3.1,3.0,3.8,4.0,3.9,4.2" data-bm="3.4"></svg></div>
-        <div class="bm" style="color:var(--gold)"><span class="pip" style="background:var(--gold)"></span>on pace · 3 / 1 / 5</div>
+        <div class="sn">Gold vs lane</div>
+        <div class="row2"><div class="v">+420</div><svg class="spk" data-spark="120,180,240,300,360,390,420"></svg></div>
+        <div class="bm" style="color:var(--ahead)"><span class="pip" style="background:var(--ahead)"></span>ahead of opponent</div>
       </div></div>
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">Jungle first clear</div>
-        <div class="row2"><div class="v">3:18</div><svg class="spk" data-spark="3.6,3.5,3.4,3.35,3.3,3.25,3.3" data-bm="3.4" data-invert="1"></svg></div>
-        <div class="bm" style="color:var(--blue)"><span class="pip" style="background:var(--blue)"></span>12s faster than target</div>
+        <div class="sn">Gold vs team</div>
+        <div class="row2"><div class="v">+1.2<small>k</small></div><svg class="spk" data-spark="-200,100,400,650,900,1100,1240"></svg></div>
+        <div class="bm" style="color:var(--ahead)"><span class="pip" style="background:var(--ahead)"></span>team ahead</div>
       </div></div>
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">Team gold lead</div>
-        <div class="row2"><div class="v">+1.2<small>k</small></div><svg class="spk" data-spark="-200,100,400,650,900,1100,1240" data-bm="0"></svg></div>
-        <div class="bm" style="color:var(--gold)"><span class="pip" style="background:var(--gold)"></span>ahead since 9:40</div>
+        <div class="sn">KP</div>
+        <div class="row2"><div class="v">64<small>%</small></div><svg class="spk" data-spark="50,55,58,60,62,61,64"></svg></div>
+        <div class="bm" style="color:var(--pace)"><span class="pip" style="background:var(--pace)"></span>kill participation</div>
       </div></div>
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">Team CS lead</div>
-        <div class="row2"><div class="v">+38</div><svg class="spk" data-spark="-10,5,12,20,28,33,38" data-bm="0"></svg></div>
-        <div class="bm" style="color:var(--gold)"><span class="pip" style="background:var(--gold)"></span>slight tempo edge</div>
+        <div class="sn">First clear</div>
+        <div class="row2"><div class="v">3:18</div><svg class="spk" data-spark="3.6,3.5,3.4,3.35,3.3,3.25,3.3"></svg></div>
+        <div class="bm" style="color:var(--ahead)"><span class="pip" style="background:var(--ahead)"></span>junglers only</div>
       </div></div>
       <div class="hex rv"><div class="hex-in stat">
-        <div class="sn">Vision / min</div>
-        <div class="row2"><div class="v">0.71</div><svg class="spk" data-spark="0.9,0.85,0.8,0.78,0.74,0.72,0.71" data-bm="0.95" data-invert="1"></svg></div>
-        <div class="bm" style="color:var(--red)"><span class="pip" style="background:var(--red)"></span>−0.24 · your weak spot</div>
+        <div class="sn">Lane quest</div>
+        <div class="row2"><div class="v" style="font-size:20px">✓</div></div>
+        <div class="bm" style="color:var(--pace)"><span class="pip" style="background:var(--pace)"></span>opponent progress chip</div>
       </div></div>
     </div>
   </div>
 </section>
 
-<!-- ============ HOW BENCHMARKS WORK ============ -->
+<!-- ============ HOW IT WORKS ============ -->
 <section id="how">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="kicker">How we decide you're hardstuck</span>
-      <h2>Your targets, not the global average</h2>
-      <p>Pick where you are and where you're going. FF@15 pulls per-tier targets for your role and scores you live against the rank you're actually chasing.</p>
+      <span class="kicker">How it works</span>
+      <h2>Connect once, read live pace all game</h2>
+      <p>FF@15 attaches to the League client on your machine. No cloud account, no personal Riot API key — just the official local APIs Riot exposes while you play.</p>
     </div>
     <div class="steps">
       <div class="hex rv"><div class="hex-in step">
         <div class="no"></div>
-        <h3>Pick your role &amp; rank</h3>
-        <p>Tell it you're a <span class="g">Diamond IV jungler</span>, or set a goal rank to climb toward and benchmark against your future self.</p>
+        <h3>Install &amp; open League</h3>
+        <p>Download from <span class="g">GitHub Releases</span>, launch FF@15, then log into the League client on the same machine. The app connects automatically.</p>
       </div></div>
       <div class="hex rv"><div class="hex-in step">
         <div class="no"></div>
-        <h3>Play your game</h3>
-        <p>FF@15 reads the live match and tracks <span class="t">every stat in real time</span>. No alt-tab, no spreadsheet, no after-the-fact regret.</p>
+        <h3>Toggle your overlays</h3>
+        <p>Open <span class="t">Overlay Settings</span> to enable the live stats bar, lane quest chip, and death recap panel. Previews use sample data before you queue.</p>
       </div></div>
       <div class="hex rv"><div class="hex-in step">
         <div class="no"></div>
-        <h3>Hit your benchmarks</h3>
-        <p>Each stat is scored against players at your target rank, so you always know which number is <span class="g">carrying</span> and which one is <span style="color:var(--red)">losing the game</span>.</p>
+        <h3>Read the swing</h3>
+        <p>Teal and red on gold diffs tell you who's ahead. Open the companion for the <span class="g">live scoreboard</span>, match stats, and captured rewind after the game.</p>
       </div></div>
     </div>
 
     <div class="hex rv ladder-wrap"><div class="hex-in ladder">
-      <div class="lab">CS / min benchmark · Jungle · by tier</div>
+      <div class="lab">Color language · same as the app</div>
       <div class="tiers" id="tiers">
-        <div class="tier" data-h="34"><div class="track"><div class="bar"></div></div><div class="tn">Silver</div><div class="tv">6.2</div></div>
-        <div class="tier" data-h="48"><div class="track"><div class="bar"></div></div><div class="tn">Gold</div><div class="tv">6.8</div></div>
-        <div class="tier" data-h="62"><div class="track"><div class="bar"></div></div><div class="tn">Plat</div><div class="tv">7.1</div></div>
-        <div class="tier goal" data-h="80"><div class="track"><div class="bar goal"></div></div><div class="tn">Diamond</div><div class="tv">7.5 ◆</div></div>
-        <div class="tier" data-h="92"><div class="track"><div class="bar"></div></div><div class="tn">Master</div><div class="tv">7.9</div></div>
-        <div class="tier" data-h="100"><div class="track"><div class="bar"></div></div><div class="tn">Chall.</div><div class="tv">8.4</div></div>
+        <div class="tier goal" data-h="80"><div class="track"><div class="bar goal"></div></div><div class="tn">Ahead</div><div class="tv" style="color:var(--ahead)">teal</div></div>
+        <div class="tier" data-h="55"><div class="track"><div class="bar"></div></div><div class="tn">Even</div><div class="tv">gold</div></div>
+        <div class="tier" data-h="35"><div class="track"><div class="bar" style="background:linear-gradient(180deg,var(--behind),#a82d3f)"></div></div><div class="tn">Behind</div><div class="tv" style="color:var(--behind)">red</div></div>
       </div>
     </div></div>
   </div>
@@ -653,67 +642,64 @@
       <p>Hextech panels, gold-and-blue, tabular numerics. Nothing on screen Riot's own UI wouldn't recognize.</p>
     </div>
     <div class="show-grid">
-      <!-- expanded panel shot -->
+      <!-- live stats bar shot -->
       <div class="hex rv"><div class="hex-in shot">
-        <div class="frame"><div class="px">
-          <div class="mk-head">
-            <svg class="logo"><use href="#ff15"/></svg>
-            <div class="tabs"><span class="on">Me</span><span>Team</span></div>
-          </div>
-          <div class="mk-charts">
-            <div class="mk-ch"><div class="cn">CS / min</div><div class="cv">8.1<small>▲ +0.6</small></div><svg class="spk" data-spark="8.4,7.9,8.0,8.3,8.1,8.6,8.1" data-bm="7.5"></svg></div>
-            <div class="mk-ch"><div class="cn">Gold / min</div><div class="cv">412<small>▲ +24</small></div><svg class="spk" data-spark="380,402,395,418,409,420,412" data-bm="388"></svg></div>
-            <div class="mk-ch"><div class="cn">Kill part.</div><div class="cv">64%<small>▲ +6</small></div><svg class="spk" data-spark="50,55,58,60,62,61,64" data-bm="58"></svg></div>
-            <div class="mk-ch"><div class="cn">Vision / min</div><div class="cv" style="color:var(--red)">0.71<small style="color:var(--red)">▼ −.24</small></div><svg class="spk" data-spark="0.9,0.85,0.8,0.78,0.74,0.72,0.71" data-bm="0.95" data-invert="1"></svg></div>
+        <div class="frame"><div class="px" style="justify-content:flex-start;padding-top:14px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%">
+            <div class="mk-ch" style="min-width:72px"><div class="cn">CS/m</div><div class="cv">8.1</div></div>
+            <div class="mk-ch" style="min-width:72px"><div class="cn">Vis/m</div><div class="cv">0.71</div></div>
+            <div class="mk-ch" style="min-width:72px"><div class="cn">G/m</div><div class="cv">412</div></div>
+            <div class="mk-ch" style="min-width:72px"><div class="cn">vs lane</div><div class="cv" style="color:var(--ahead)">+420</div></div>
+            <div class="mk-ch" style="min-width:72px"><div class="cn">vs team</div><div class="cv" style="color:var(--ahead)">+1.2k</div></div>
+            <div class="mk-ch" style="min-width:72px"><div class="cn">KP</div><div class="cv">64%</div></div>
           </div>
         </div></div>
-        <div class="cap"><div class="t">Expanded panel</div><h3>Every stat, full size</h3><p>Sparklines against the rank line, Me / Team toggle, one hotkey away.</p></div>
+        <div class="cap"><div class="t">Live stats bar</div><h3>Top HUD, always on</h3><p>CS/m, Vis/m, G/m, gold vs lane, gold vs team, KP, and first clear for junglers.</p></div>
       </div></div>
 
-      <!-- coaching / build shot -->
+      <!-- live scoreboard shot -->
       <div class="hex rv"><div class="hex-in shot">
         <div class="frame"><div class="px">
-          <div class="mk-head"><svg class="logo"><use href="#ff15"/></svg><div class="tabs"><span>Stats</span><span class="on">Build</span><span>Matchup</span></div></div>
-          <div class="mk-build">
-            <div class="br"><div class="it">◆</div><div class="bt"><div class="bn">Black Cleaver</div><div class="bd">vs Kha'Zix, armor shred + sticky</div></div><div class="bc">3,000</div></div>
-            <div class="br"><div class="it">◇</div><div class="bt"><div class="bn">Mercury's Treads</div><div class="bd">their damage skews AP / CC</div></div><div class="bc">1,100</div></div>
-            <div class="br" style="opacity:.55"><div class="it">◇</div><div class="bt"><div class="bn">Death's Dance</div><div class="bd">next buy, bleed + AD sustain</div></div><div class="bc">3,300</div></div>
-            <div class="mk-skill"><span class="q">Q</span><span class="q">Q</span><span>W</span><span class="q">Q</span><span>R</span><span class="q">Q</span></div>
-          </div>
-        </div></div>
-        <div class="cap"><div class="t">Live coaching</div><h3>Build &amp; skills, by matchup</h3><p>An item path and power-spike read that updates with the game state.</p></div>
-      </div></div>
-
-      <!-- companion history shot -->
-      <div class="hex rv"><div class="hex-in shot">
-        <div class="frame"><div class="px">
-          <div class="mk-head"><svg class="logo"><use href="#ff15"/></svg><div class="tabs"><span class="on">History</span><span>Stats</span></div></div>
+          <div class="mk-head"><svg class="logo"><use href="#ff15"/></svg><div class="tabs"><span class="on">Live scoreboard</span></div></div>
           <div class="mk-hist">
-            <div class="hr w"><div class="res"></div><div class="ch">Viego<small>Jungle · 28:14</small></div><div class="kda">9 / 4 / 11</div><div class="gr" style="color:var(--gold)">A−</div></div>
-            <div class="hr w"><div class="res"></div><div class="ch">Lee Sin<small>Jungle · 31:02</small></div><div class="kda">6 / 5 / 14</div><div class="gr" style="color:var(--blue)">S</div></div>
-            <div class="hr l"><div class="res"></div><div class="ch">Graves<small>Jungle · 24:50</small></div><div class="kda">4 / 8 / 6</div><div class="gr" style="color:var(--muted)">C</div></div>
-            <div class="hr w"><div class="res"></div><div class="ch">Viego<small>Jungle · 26:33</small></div><div class="kda">11 / 3 / 9</div><div class="gr" style="color:var(--gold)">A</div></div>
+            <div class="hr w"><div class="res" style="background:var(--ahead)"></div><div class="ch">You<small>Mid · alive</small></div><div class="kda">3 / 1 / 5</div><div class="gr" style="color:var(--ahead);font-family:var(--fm);font-size:11px">8.1 CS/m</div></div>
+            <div class="hr l"><div class="res" style="background:var(--behind)"></div><div class="ch">Enemy mid<small>Mid · alive</small></div><div class="kda">1 / 4 / 2</div><div class="gr" style="color:var(--muted);font-family:var(--fm);font-size:11px">6.4 CS/m</div></div>
+            <div class="hr w"><div class="res" style="background:var(--ahead)"></div><div class="ch">Ally jungle<small>Jungle · alive</small></div><div class="kda">2 / 0 / 8</div><div class="gr" style="color:var(--pace);font-family:var(--fm);font-size:11px">quest ✓</div></div>
           </div>
         </div></div>
-        <div class="cap"><div class="t">Out-of-game companion</div><h3>Your match history, graded</h3><p>Every game scored, with the trend that's actually moving your LP.</p></div>
+        <div class="cap"><div class="t">Companion · in game</div><h3>Full live scoreboard</h3><p>All ten players with quest cells, pace stats, and items — open from the phase banner.</p></div>
       </div></div>
 
-      <!-- verdict shot -->
+      <!-- match history shot -->
       <div class="hex rv"><div class="hex-in shot">
         <div class="frame"><div class="px">
-          <div class="mk-head"><svg class="logo"><use href="#ff15"/></svg><div class="tabs"><span class="on">15:00</span></div></div>
+          <div class="mk-head"><svg class="logo"><use href="#ff15"/></svg><div class="tabs"><span class="on">History</span></div></div>
+          <div class="mk-hist">
+            <div class="hr w"><div class="res"></div><div class="ch">Viego<small>Jungle · 28:14</small></div><div class="kda">9 / 4 / 11</div><div class="gr" style="color:var(--ahead);font-family:var(--fm);font-size:11px">WIN</div></div>
+            <div class="hr w"><div class="res"></div><div class="ch">Lee Sin<small>Jungle · 31:02</small></div><div class="kda">6 / 5 / 14</div><div class="gr" style="color:var(--ahead);font-family:var(--fm);font-size:11px">WIN</div></div>
+            <div class="hr l"><div class="res"></div><div class="ch">Graves<small>Jungle · 24:50</small></div><div class="kda">4 / 8 / 6</div><div class="gr" style="color:var(--behind);font-family:var(--fm);font-size:11px">LOSS</div></div>
+            <div class="hr w"><div class="res"></div><div class="ch">Viego<small>Jungle · 26:33</small></div><div class="kda">11 / 3 / 9</div><div class="gr" style="color:var(--ahead);font-family:var(--fm);font-size:11px">WIN</div></div>
+          </div>
+        </div></div>
+        <div class="cap"><div class="t">Match history</div><h3>Grouped by queue, expandable</h3><p>WIN/LOSS rows with KDA, CS, vision, gold, and damage. Expand for rewind when capture data exists.</p></div>
+      </div></div>
+
+      <!-- LP tracker shot -->
+      <div class="hex rv"><div class="hex-in shot">
+        <div class="frame"><div class="px">
+          <div class="mk-head"><svg class="logo"><use href="#ff15"/></svg><div class="tabs"><span class="on">Ranked LP</span></div></div>
           <div class="mk-vd">
-            <div class="gr">A−</div>
-            <div class="gl">Overall grade · 15:00</div>
-            <div class="grades">
-              <div class="gd"><b style="color:var(--blue)">S</b><small>CS</small></div>
-              <div class="gd"><b style="color:var(--gold)">A</b><small>Gold</small></div>
-              <div class="gd"><b style="color:var(--gold)">A</b><small>KP</small></div>
-              <div class="gd"><b style="color:var(--red)">C</b><small>Vision</small></div>
+            <div class="gr" style="font-size:34px">Diamond II</div>
+            <div class="gl">47 LP · Solo/Duo</div>
+            <div class="grades" style="margin-top:20px">
+              <div class="gd"><b style="color:var(--ahead)">+22</b><small>W</small></div>
+              <div class="gd"><b style="color:var(--behind)">−18</b><small>L</small></div>
+              <div class="gd"><b style="color:var(--ahead)">+19</b><small>W</small></div>
+              <div class="gd"><b style="color:var(--ahead)">+21</b><small>W</small></div>
             </div>
           </div>
         </div></div>
-        <div class="cap"><div class="t">The 15:00 verdict</div><h3>Graded, then the call</h3><p>Biggest win, biggest leak, and whether the game is actually lost.</p></div>
+        <div class="cap"><div class="t">Ranked LP tracker</div><h3>LP swings, per game</h3><p>Tier emblem, current LP, and a bar chart of recent ranked gains and losses.</p></div>
       </div></div>
     </div>
   </div>
@@ -723,11 +709,11 @@
 <section class="cta" id="download">
   <div class="wrap cta-in rv">
     <span class="kicker">Get FF@15</span>
-    <h2>Stop coinflipping the <span class="g">15-minute vote</span></h2>
-    <p>Free to download, no account, no ads. It's free because charging money for a /ff joke felt a little wrong.</p>
+    <h2>Your live League <span class="g">companion</span></h2>
+    <p>Free to download, no account, no ads. Windows and macOS — connects to the League client on your machine.</p>
     <div class="cta-btns">
       <div class="dl" id="dl">
-        <a class="btn btn-gold dl-primary" id="dlPrimary" href="https://github.com/troytc/ff15-releases/releases/download/v0.5.1/ff%4015_0.5.1_x64-setup.exe">
+        <a class="btn btn-gold dl-primary" id="dlPrimary" href="https://github.com/troytc/ff15-releases/releases/download/v2026.7.2/FF%4015_2026.7.2_x64-setup.exe">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8-1.1v7.1H3zM12 4.3L21 3v8.5h-9zM3 12.5h8v7.1l-8-1.1zM12 12.5h9V21l-9-1.3z"/></svg>
           <span>Download for Windows</span>
         </a>
@@ -735,23 +721,23 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
         </button>
         <div class="dl-menu" id="dlMenu" role="menu">
-          <a role="menuitem" href="https://github.com/troytc/ff15-releases/releases/download/v0.5.1/ff15_0.5.1_universal.app.zip">
+          <a role="menuitem" href="https://github.com/troytc/ff15-releases/releases/download/v2026.7.2/ff15_2026.7.2_universal.app.zip">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c-1 .1-2.2.7-2.9 1.5-.6.7-1.2 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4.6-.8 1.1-1.9 1-3zM19 17c-.5 1.2-.8 1.7-1.5 2.7-1 1.5-2.4 3.3-4.1 3.3-1.5 0-1.9-1-3.9-1-2 0-2.4 1-3.9 1-1.7 0-3-1.7-4-3.2C-.6 16.4-.9 11 1.6 8.4 2.7 7.2 4.3 6.5 6 6.5c1.7 0 2.8 1 4.2 1 1.4 0 2.2-1 4.2-1 1.5 0 3.1.8 4.2 2.2-3.7 2-3.1 7.3.4 8.3z"/></svg>
             <span>macOS<span class="dl-sub">Universal · Apple Silicon + Intel</span></span>
           </a>
-          <a role="menuitem" href="https://github.com/troytc/ff15-releases/releases/download/v0.5.1/ff%4015_0.5.1_x64_en-US.msi">
+          <a role="menuitem" href="https://github.com/troytc/ff15-releases/releases/download/v2026.7.2/FF%4015_2026.7.2_x64-setup.exe">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5l8-1.1v7.1H3zM12 4.3L21 3v8.5h-9zM3 12.5h8v7.1l-8-1.1zM12 12.5h9V21l-9-1.3z"/></svg>
-            <span>Windows<span class="dl-sub">.msi installer</span></span>
+            <span>Windows<span class="dl-sub">.exe installer</span></span>
           </a>
           <a class="dl-rel" role="menuitem" href="https://github.com/troytc/ff15-releases/releases/latest">All downloads &amp; release notes →</a>
         </div>
       </div>
-      <a class="btn btn-ghost" href="#showcase">Watch it cook</a>
+      <a class="btn btn-ghost" href="#showcase">See inside the app</a>
     </div>
-    <p class="cta-ver">Latest release <span id="dlVer">v0.5.1</span> · macOS &amp; Windows · Apple Silicon + Intel</p>
+    <p class="cta-ver">Latest release <span id="dlVer">v2026.7.2</span> · macOS &amp; Windows · Apple Silicon + Intel</p>
     <div class="platforms">
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 20h8"/></svg> Desktop overlay</span>
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .5-4.5 4 1.5 6L12 15l-6 3.5 1.5-6L3 8.5 9 8z"/></svg> Every rank, free</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="1"/><path d="M8 20h8"/></svg> Desktop companion</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .5-4.5 4 1.5 6L12 15l-6 3.5 1.5-6L3 8.5 9 8z"/></svg> Free · no account</span>
     </div>
   </div>
 </section>
@@ -762,14 +748,14 @@
     <div class="foot-in">
       <div class="foot-brand">
         <svg class="logo"><use href="#ff15"/></svg>
-        <p>A live League of Legends stat overlay that scores your game against your rank, so you know when it's actually winnable.</p>
+        <p>A League of Legends desktop companion with live stats overlays, match history, ranked LP tracking, and local match capture.</p>
       </div>
       <div class="foot-cols">
         <div class="foot-col">
           <h4>Product</h4>
           <a href="#features">Features</a>
           <a href="#stats">Stats tracked</a>
-          <a href="#how">How benchmarks work</a>
+          <a href="#how">How it works</a>
           <a href="#showcase">Inside the app</a>
         </div>
         <div class="foot-col">
@@ -780,9 +766,9 @@
         </div>
         <div class="foot-col">
           <h4>Support</h4>
-          <a href="#">Setup guide</a>
-          <a href="#">Discord</a>
-          <a href="#">Feedback</a>
+          <a href="/setup.html">Setup guide</a>
+          <a href="https://discord.gg/ff15" target="_blank" rel="noopener">Discord</a>
+          <a href="https://github.com/troytc/ff15-releases/issues/new" target="_blank" rel="noopener">Feedback</a>
           <a href="/privacy.html">Privacy</a>
         </div>
       </div>
@@ -799,7 +785,7 @@
   "use strict";
   var NS = "http://www.w3.org/2000/svg";
 
-  // ---- sparkline renderer: line + soft area fill + dashed benchmark line + end dot ----
+  // ---- sparkline renderer: line + soft area fill + end dot ----
   function draw(svg){
     var data = (svg.getAttribute("data-spark")||"").split(",").map(Number).filter(function(n){return !isNaN(n);});
     if(data.length < 2) return;
@@ -886,9 +872,6 @@
     el.classList.add("in");
     drawAll(el);
     el.querySelectorAll("[data-count]").forEach(countUp);
-    // pace ring
-    var arc = el.querySelector("#paceArc");
-    if(arc){ arc.style.transition="stroke-dashoffset 1.2s cubic-bezier(.3,.7,.3,1)"; requestAnimationFrame(function(){ arc.style.strokeDashoffset = 107*(1-0.78); }); }
   }
   var rvEls = document.querySelectorAll(".rv");
   var noMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -914,7 +897,6 @@
   // hero is above the fold, kick its sparklines/counts immediately
   drawAll(document.querySelector(".hud"));
   document.querySelectorAll(".hud [data-count]").forEach(countUp);
-  (function(){ var a=document.getElementById("paceArc"); if(a){ a.style.transition="stroke-dashoffset 1.3s .2s cubic-bezier(.3,.7,.3,1)"; requestAnimationFrame(function(){ requestAnimationFrame(function(){ a.style.strokeDashoffset = 107*(1-0.78); }); }); } })();
 
   // ---- verdict gauge: needle + arc fill when scrolled into view ----
   var vg = document.getElementById("verdictGauge");
@@ -980,13 +962,12 @@
 
   // Fallback assets: hardcoded latest known release, used until the live fetch lands
   // (and if the GitHub API is unreachable / rate-limited).
-  var BASE = "https://github.com/troytc/ff15-releases/releases/download/v0.5.1/";
+  var BASE = "https://github.com/troytc/ff15-releases/releases/download/v2026.7.2/";
   var A = {
-    mac:    { id:"mac", label:"macOS",   sub:"Universal · Apple Silicon + Intel", icon:MAC, url:BASE+"ff15_0.5.1_universal.app.zip" },
-    winExe: { id:"win", label:"Windows", sub:".exe installer",                    icon:WIN, url:BASE+"ff%4015_0.5.1_x64-setup.exe" },
-    winMsi: { id:"win", label:"Windows", sub:".msi installer",                    icon:WIN, url:BASE+"ff%4015_0.5.1_x64_en-US.msi" }
+    mac:    { id:"mac", label:"macOS",   sub:"Universal · Apple Silicon + Intel", icon:MAC, url:BASE+"ff15_2026.7.2_universal.app.zip" },
+    winExe: { id:"win", label:"Windows", sub:".exe installer",                    icon:WIN, url:BASE+"FF%4015_2026.7.2_x64-setup.exe" }
   };
-  var version = "0.5.1";
+  var version = "2026.7.2";
 
   function detect(){
     var ua = navigator.userAgent || "";
@@ -999,9 +980,8 @@
   // Returns { primary, menu:[...] }. Primary = detected OS; the rest go in the dropdown.
   function order(){
     var os = detect();
-    if(os === "mac") return { primary:A.mac,    menu:[A.winExe, A.winMsi] };
-    // Windows (and anything unknown) lead with the one-click .exe installer.
-    return { primary:A.winExe, menu:[A.mac, A.winMsi] };
+    if(os === "mac") return { primary:A.mac,    menu:[A.winExe] };
+    return { primary:A.winExe, menu:[A.mac] };
   }
 
   function menuItem(a){
@@ -1049,12 +1029,10 @@
     .then(function(rel){
       if(!rel || !rel.assets || !rel.assets.length) return;
       version = (rel.tag_name || "").replace(/^v/i,"") || version;
-      var mac    = pick(rel.assets, /\.app\.zip$/i) || pick(rel.assets, /\.dmg$/i);
       var winExe = pick(rel.assets, /-setup\.exe$/i) || pick(rel.assets, /\.exe$/i);
-      var winMsi = pick(rel.assets, /\.msi$/i);
+      var mac    = pick(rel.assets, /\.app\.zip$/i) || pick(rel.assets, /\.dmg$/i);
       if(mac)    A.mac.url    = mac;
       if(winExe) A.winExe.url = winExe;
-      if(winMsi) A.winMsi.url = winMsi;
       render();
     })
     .catch(function(){ /* keep hardcoded fallback */ });

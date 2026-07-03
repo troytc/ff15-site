@@ -1,0 +1,93 @@
+/* FF@15 Hextech tokens — synced with troytc/ff15 src/lib/styles/ff15.css */
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+:root {
+  --bg: #010a13;
+  --surface: #0a1428;
+  --surface-2: #0b1a2b;
+  --teal: #0a323c;
+  --ink: #06101c;
+  --line: #16273a;
+  --line-2: #1e3346;
+  --line-gold: #463714;
+  --border-gold: #785a28;
+  --fg: #f0e6d2;
+  --muted: #a09b8c;
+  --dim: #6a6b68;
+  --gold: #c8aa6e;
+  --gold-2: #c89b3c;
+  --gold-bright: #f0e6d2;
+  --blue: #0ac8b9;
+  --blue-deep: #0397ab;
+  --blue-light: #cdfafa;
+  --ahead: #0ac8b9;
+  --behind: #e84057;
+  --pace: #c8aa6e;
+  --ahead-ink: #08231f;
+  --behind-ink: #2a0e13;
+  --pace-ink: #241b07;
+  --fd: "Cinzel", "Trajan Pro", "Optima", "Palatino Linotype", Georgia, serif;
+  --fb: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --fm: ui-monospace, "SF Mono", "DIN Next", Menlo, monospace;
+  --hex-bevel: 11px;
+  --hex-border: 1px;
+  --bevel: polygon(
+    var(--hex-bevel) 0,
+    100% 0,
+    100% calc(100% - var(--hex-bevel)),
+    calc(100% - var(--hex-bevel)) 100%,
+    0 100%,
+    0 var(--hex-bevel)
+  );
+  --bevel-in: polygon(
+    calc(var(--hex-bevel) - var(--hex-border)) 0,
+    100% 0,
+    100% calc(100% - var(--hex-bevel) + var(--hex-border)),
+    calc(100% - var(--hex-bevel) + var(--hex-border)) 100%,
+    0 100%,
+    0 calc(var(--hex-bevel) - var(--hex-border))
+  );
+  --btn-bevel: 6px;
+  --btn-border: 1px;
+  --bevel-btn: polygon(
+    var(--btn-bevel) 0,
+    100% 0,
+    100% calc(100% - var(--btn-bevel)),
+    calc(100% - var(--btn-bevel)) 100%,
+    0 100%,
+    0 var(--btn-bevel)
+  );
+  --bevel-sm: var(--bevel-btn);
+}
+
+.hex {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(180deg, var(--border-gold), #3a2c14);
+  clip-path: var(--bevel);
+  padding: var(--hex-border);
+}
+
+.hex-in {
+  position: relative;
+  background: linear-gradient(180deg, rgba(10, 30, 48, 0.96), rgba(6, 16, 28, 0.98));
+  height: 100%;
+  clip-path: var(--bevel-in);
+  overflow: hidden;
+}
+
+.eyebrow,
+.kicker {
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.c-ahead { color: var(--ahead); }
+.c-behind { color: var(--behind); }
+.c-pace { color: var(--pace); }
+.c-gold { color: var(--gold); }
+.c-blue { color: var(--blue-light); }
+.c-muted { color: var(--muted); }
